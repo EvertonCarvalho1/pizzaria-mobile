@@ -5,7 +5,7 @@ export default function SignIn() {
 
     return (
         <View>
-            <Text>Tela de login</Text>
+            <Text>Tela de loginaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</Text>
         </View>
     )
 }
