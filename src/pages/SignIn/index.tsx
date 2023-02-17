@@ -23,12 +23,19 @@ export default function SignIn() {
                 <TextInput
                     style={styles.input}
                     placeholder='Digite seu email'
+                    placeholderTextColor="#f0f0f0"
                 />
 
                 <TextInput
                     style={styles.input}
                     placeholder='Digite sua senha'
+                    placeholderTextColor="#f0f0f0"
+                    secureTextEntry={true}
                 />
+
+                <TouchableOpacity style={styles.button}>
+                    <Text style={styles.buttonText}>Acessar</Text>
+                </TouchableOpacity>
             </View>
         </View>
     )
