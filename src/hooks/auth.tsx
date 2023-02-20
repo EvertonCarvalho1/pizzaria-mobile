@@ -1,4 +1,5 @@
 import React, { useState, createContext, ReactNode, useContext } from "react";
+import { api } from '../services/api';
 
 type AuthContextData = {
     user: UserProps;
@@ -33,10 +34,21 @@ function AuthProvider({ children }: AuthProviderProps) {
         token: '',
     });
 
+    const [loadingAuth, setLoadingAuth] = useState(false);
+
     const isAuthenticated = !!user.name;
 
     async function signIn({ email, password }: SignInProps) {
-        console.log('my credentials', email, password);
+        setLoadingAuth(true);
+
+        try {
+            const response = await api.post('/session', { email, password });
+            setUser(response.data);
+            setLoadingAuth(false);
+        } catch (error) {
+            console.log('erro ao acessar', error);
+            setLoadingAuth(false);
+        }
     }
 
     return (
