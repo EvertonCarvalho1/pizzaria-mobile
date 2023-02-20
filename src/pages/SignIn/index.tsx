@@ -7,18 +7,21 @@ import {
     TouchableOpacity
 } from 'react-native';
 
+import { useAuth } from "../../hooks/auth";
+
 import { styles } from './styles';
 
 export default function SignIn() {
+    const { signIn } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    function handleLogin() {
+    async function handleLogin() {
         if (email === '' || password === '') {
             return;
         }
 
-        console.log('meus dados', email, password)
+        await signIn({ email, password });
     }
 
     return (
