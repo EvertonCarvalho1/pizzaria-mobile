@@ -1,4 +1,7 @@
 import React, { useState, createContext, ReactNode, useContext } from "react";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { api } from '../services/api';
 
 type AuthContextData = {
@@ -43,7 +46,17 @@ function AuthProvider({ children }: AuthProviderProps) {
 
         try {
             const response = await api.post('/session', { email, password });
+
+            const data = {
+                ...response.data,
+            }
+
+            await AsyncStorage.setItem('@sujeitopizzaria', JSON.stringify(data));
+
+            api.defaults.headers.common['Authorization'] = ` ${response.data.token}`
+
             setUser(response.data);
+
             setLoadingAuth(false);
         } catch (error) {
             console.log('erro ao acessar', error);
