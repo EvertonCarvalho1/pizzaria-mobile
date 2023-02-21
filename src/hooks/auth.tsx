@@ -1,4 +1,4 @@
-import React, { useState, createContext, ReactNode, useContext } from "react";
+import React, { useState, createContext, ReactNode, useContext, useEffect } from "react";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -8,8 +8,10 @@ type AuthContextData = {
     user: UserProps;
     isAuthenticated: boolean;
     signIn: (credentials: SignInProps) => Promise<void>;
+    loadingAuth: boolean;
+    loading: boolean;
+    signOut: () => Promise<void>;
 }
-
 
 type UserProps = {
     id: string;
@@ -38,8 +40,28 @@ function AuthProvider({ children }: AuthProviderProps) {
     });
 
     const [loadingAuth, setLoadingAuth] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const isAuthenticated = !!user.name;
+
+    useEffect(() => {
+
+        async function getUSer() {
+            const userInfo = await AsyncStorage.getItem('@sujeitopizzaria');
+
+            let hasUser: UserProps = JSON.parse(userInfo || '{}');
+
+            if (Object.keys(hasUser).length > 0) {
+                api.defaults.headers.common['Authorization'] = ` ${hasUser.token}`
+
+                setUser(hasUser);
+            }
+
+            setLoading(false);
+        }
+
+        getUSer();
+    }, [])
 
     async function signIn({ email, password }: SignInProps) {
         setLoadingAuth(true);
@@ -64,8 +86,27 @@ function AuthProvider({ children }: AuthProviderProps) {
         }
     }
 
+    async function signOut() {
+        await AsyncStorage.clear()
+            .then(() => {
+                setUser({
+                    id: '',
+                    name: '',
+                    email: '',
+                    token: '',
+                })
+            })
+    }
+
     return (
-        <AuthContext.Provider value={{ user, isAuthenticated, signIn }}>
+        <AuthContext.Provider value={{
+            user,
+            isAuthenticated,
+            signIn,
+            loadingAuth,
+            loading,
+            signOut
+        }}>
             {children}
         </AuthContext.Provider>
     );
