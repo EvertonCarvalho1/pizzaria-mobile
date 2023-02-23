@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     View,
     Text,
@@ -12,6 +12,11 @@ import { styles } from './styles';
 
 export default function Dashboard() {
     const { signOut } = useAuth();
+    const [number, setNumber] = useState('');
+
+    async function openOrder() {
+        alert('teste');
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -22,9 +27,14 @@ export default function Dashboard() {
                 placeholderTextColor={'#f0f0f0'}
                 style={styles.input}
                 keyboardType='numeric'
+                value={number}
+                onChangeText={setNumber}
             />
 
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity
+                style={styles.button}
+                onPress={openOrder}
+            >
                 <Text style={styles.buttonText}>Abrir mesa</Text>
             </TouchableOpacity>
         </SafeAreaView>
