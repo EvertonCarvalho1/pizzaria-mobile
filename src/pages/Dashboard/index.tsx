@@ -15,7 +15,7 @@ export default function Dashboard() {
     const [number, setNumber] = useState('');
 
     async function openOrder() {
-        alert('teste');
+        alert('teste1');
     }
 
     return (
