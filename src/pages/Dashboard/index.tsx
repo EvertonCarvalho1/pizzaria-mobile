@@ -7,15 +7,24 @@ import {
     TouchableOpacity,
     TextInput
 } from 'react-native'
+import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../hooks/auth';
+
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { StackParamsList } from '../../routes/app.routes';
+
 import { styles } from './styles';
 
 export default function Dashboard() {
+    const navigation = useNavigation<NativeStackNavigationProp<StackParamsList>>();
     const { signOut } = useAuth();
     const [number, setNumber] = useState('');
 
     async function openOrder() {
-        alert('teste1');
+        if (number === '') {
+            return;
+        }
+        navigation.navigate('Order', { number: number, order_id: '8978789789' });
     }
 
     return (
