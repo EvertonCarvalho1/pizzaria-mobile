@@ -1,8 +1,14 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-import { styles } from './styles';
-
+import {
+    View,
+    Text,
+    TouchableOpacity
+} from 'react-native';
 import { useRoute, RouteProp } from '@react-navigation/native';
+
+import { Feather } from '@expo/vector-icons';
+
+import { styles } from './styles';
 
 type RouteDetailParams = {
     Order: {
@@ -18,8 +24,20 @@ export default function Order() {
 
     return (
         <View style={styles.container}>
-            <Text>Tela order</Text>
-            <Text>{route.params.order_id}</Text>
+            <View style={styles.header}>
+                <Text style={styles.title}>Mesa {route.params.number}</Text>
+
+                <TouchableOpacity>
+                    <Feather name='trash-2' size={28} color='#ff3f4b' />
+                </TouchableOpacity>
+            </View>
+            <TouchableOpacity style={styles.input}>
+                <Text style={{ color: '#fff' }}>Pizzas</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.input}>
+                <Text style={{ color: '#fff' }}>Pizzas de calabressa</Text>
+            </TouchableOpacity>
         </View>
     );
 }
