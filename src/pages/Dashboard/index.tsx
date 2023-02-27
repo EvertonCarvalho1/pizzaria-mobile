@@ -9,6 +9,7 @@ import {
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../hooks/auth';
+import { useOrder } from '../../hooks/order'
 
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { StackParamsList } from '../../routes/app.routes';
@@ -17,14 +18,17 @@ import { styles } from './styles';
 
 export default function Dashboard() {
     const navigation = useNavigation<NativeStackNavigationProp<StackParamsList>>();
+    const { openOrder } = useOrder();
     const { signOut } = useAuth();
     const [number, setNumber] = useState('');
 
-    async function openOrder() {
+    async function handleOpenOrder() {
         if (number === '') {
             return;
         }
-        navigation.navigate('Order', { number: number, order_id: '8978789789' });
+
+        await openOrder(number);
+        // navigation.navigate('Order', { number: number, order_id: '8978789789' });
     }
 
     return (
@@ -42,7 +46,7 @@ export default function Dashboard() {
 
             <TouchableOpacity
                 style={styles.button}
-                onPress={openOrder}
+                onPress={handleOpenOrder}
             >
                 <Text style={styles.buttonText}>Abrir mesa</Text>
             </TouchableOpacity>

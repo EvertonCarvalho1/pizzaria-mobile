@@ -30,11 +30,13 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 8,
         color: '#FFF',
         fontSize: 20
-    }, qtdContainer: {
+    },
+    qtdContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between'
-    }, qtdText: {
+    },
+    qtdText: {
         fontSize: 20,
         fontWeight: 'bold',
         color: '#FFF'
@@ -65,6 +67,4 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     }
-
-
 });

@@ -52,7 +52,7 @@ function AuthProvider({ children }: AuthProviderProps) {
             let hasUser: UserProps = JSON.parse(userInfo || '{}');
 
             if (Object.keys(hasUser).length > 0) {
-                api.defaults.headers.common['Authorization'] = ` ${hasUser.token}`
+                api.defaults.headers.common['Authorization'] = `Bearer ${hasUser.token}`
 
                 setUser(hasUser);
             }
@@ -75,7 +75,9 @@ function AuthProvider({ children }: AuthProviderProps) {
 
             await AsyncStorage.setItem('@sujeitopizzaria', JSON.stringify(data));
 
-            api.defaults.headers.common['Authorization'] = ` ${response.data.token}`
+            console.log(response.data.token)
+
+            api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
 
             setUser(response.data);
 
