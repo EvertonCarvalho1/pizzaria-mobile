@@ -2,7 +2,8 @@ import React from 'react';
 import {
     View,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    TextInput
 } from 'react-native';
 import { useRoute, RouteProp } from '@react-navigation/native';
 
@@ -38,6 +39,27 @@ export default function Order() {
             <TouchableOpacity style={styles.input}>
                 <Text style={{ color: '#fff' }}>Pizzas de calabressa</Text>
             </TouchableOpacity>
+
+            <View style={styles.qtdContainer}>
+                <Text style={styles.qtdText}>Quantidade</Text>
+                <TextInput
+                    style={[styles.input, { width: '60%', textAlign: 'center' }]}
+                    placeholderTextColor='#f0f0f0'
+                    keyboardType='numeric'
+                />
+            </View>
+
+            <View style={styles.actions}>
+                <TouchableOpacity style={styles.buttonAdd}>
+                    <Text style={styles.buttonText}>+</Text>
+                </TouchableOpacity>
+
+
+                <TouchableOpacity style={styles.button}>
+                    <Text style={styles.buttonText}>Avançar</Text>
+                </TouchableOpacity>
+            </View>
+
         </View>
     );
 }
