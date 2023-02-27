@@ -27,7 +27,11 @@ export default function Dashboard() {
             return;
         }
 
-        await openOrder(number);
+        try {
+            await openOrder(number);
+        } catch (error) {
+            console.log('meu erro', error);
+        }
         // navigation.navigate('Order', { number: number, order_id: '8978789789' });
     }
 

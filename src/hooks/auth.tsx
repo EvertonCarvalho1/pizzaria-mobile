@@ -75,16 +75,14 @@ function AuthProvider({ children }: AuthProviderProps) {
 
             await AsyncStorage.setItem('@sujeitopizzaria', JSON.stringify(data));
 
-            console.log(response.data.token)
-
             api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
 
             setUser(response.data);
 
             setLoadingAuth(false);
         } catch (error) {
-            console.log('erro ao acessar', error);
             setLoadingAuth(false);
+            throw new Error(`erro ao acessar "${error}"`)
         }
     }
 
