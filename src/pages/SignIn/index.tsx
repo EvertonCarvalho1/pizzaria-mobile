@@ -21,8 +21,11 @@ export default function SignIn() {
         if (email === '' || password === '') {
             return;
         }
-
-        await signIn({ email, password });
+        try {
+            await signIn({ email, password });
+        } catch (error) {
+            console.log('meu erro', error);
+        }
     }
 
     return (

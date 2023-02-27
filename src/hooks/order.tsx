@@ -20,16 +20,22 @@ function OrderProvider({ children }: OrderProviderProps) {
 
     async function openOrder(number: string) {
         setLoading(true);
+        try {
+            const response = await api.post('/order', { table: Number(number) });
 
-        const response = await api.post('/order', { table: Number(number) });
-
-        console.log(response.data)
+            console.log('minha resposta', response.data);
+            setLoading(false);
+        } catch (error) {
+            setLoading(false);
+            throw new Error(`Não foi possivel criar a mesa "${error}"`);
+        }
     }
 
-
-
     return (
-        <OrderContext.Provider value={{ loading, openOrder }}>
+        <OrderContext.Provider value={{
+            loading,
+            openOrder
+        }}>
             {children}
         </OrderContext.Provider>
     );
