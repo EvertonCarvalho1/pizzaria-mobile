@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import {
-    View,
     Text,
-    Button,
     SafeAreaView,
     TouchableOpacity,
     TextInput
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
-import { useAuth } from '../../hooks/auth';
 import { useOrder } from '../../hooks/order'
 
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -31,7 +28,7 @@ export default function Dashboard() {
             navigation.navigate('Order');
             setNumber('');
         } catch (error) {
-            console.log('meu erro', error);
+            console.log(error);
         }
     }
 

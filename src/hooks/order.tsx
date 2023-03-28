@@ -17,6 +17,7 @@ type OrderContextData = {
     loading: boolean;
     openOrder: (number: string) => Promise<void>;
     orderData: OrderData;
+    closeOrder: (order_id: string) => Promise<void>;
 }
 
 type OrderProviderProps = {
@@ -55,8 +56,9 @@ function OrderProvider({ children }: OrderProviderProps) {
             });
             setLoading(false);
         } catch (error) {
-            throw new Error(`Não foi possivel excluir a mesa "${error}"`);
+
             setLoading(false);
+            throw new Error(`Não foi possivel excluir a mesa "${error}"`);
         }
     }
 
@@ -64,7 +66,8 @@ function OrderProvider({ children }: OrderProviderProps) {
         <OrderContext.Provider value={{
             loading,
             openOrder,
-            orderData
+            orderData,
+            closeOrder
         }}>
             {children}
         </OrderContext.Provider>

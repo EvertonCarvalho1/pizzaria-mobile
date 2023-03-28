@@ -5,6 +5,9 @@ import {
     TouchableOpacity,
     TextInput
 } from 'react-native';
+
+import { useNavigation } from '@react-navigation/native';
+
 import { useOrder } from '../../hooks/order';
 
 import { Feather } from '@expo/vector-icons';
@@ -12,10 +15,20 @@ import { Feather } from '@expo/vector-icons';
 import { styles } from './styles';
 
 export default function Order() {
-    const { } = useOrder();
+    const navigation = useNavigation();
+
+    const {
+        orderData,
+        closeOrder
+    } = useOrder();
 
     async function handleCloseOrder() {
-        alert('click');
+        try {
+            await closeOrder(orderData?.id);
+            navigation.goBack();
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
