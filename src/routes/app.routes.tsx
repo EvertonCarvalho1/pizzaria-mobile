@@ -6,10 +6,7 @@ import Order from '../pages/Order';
 
 export type StackParamsList = {
     Dashboard: undefined;
-    Order: {
-        number: number | string;
-        order_id: string;
-    };
+    Order: undefined;
 }
 
 const Stack = createNativeStackNavigator<StackParamsList>();
