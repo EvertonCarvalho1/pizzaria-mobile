@@ -19,7 +19,6 @@ import { styles } from './styles';
 export default function Dashboard() {
     const navigation = useNavigation<NativeStackNavigationProp<StackParamsList>>();
     const { openOrder } = useOrder();
-    const { signOut } = useAuth();
     const [number, setNumber] = useState('');
 
     async function handleOpenOrder() {
@@ -30,6 +29,7 @@ export default function Dashboard() {
         try {
             await openOrder(number);
             navigation.navigate('Order');
+            setNumber('');
         } catch (error) {
             console.log('meu erro', error);
         }

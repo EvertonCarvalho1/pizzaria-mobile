@@ -14,13 +14,16 @@ import { styles } from './styles';
 export default function Order() {
     const { } = useOrder();
 
+    async function handleCloseOrder() {
+        alert('click');
+    }
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.title}>Mesa</Text>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={handleCloseOrder}>
                     <Feather name='trash-2' size={28} color='#ff3f4b' />
                 </TouchableOpacity>
             </View>
@@ -29,7 +32,7 @@ export default function Order() {
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.input}>
-                <Text style={{ color: '#fff' }}>Pizzas de calabressa</Text>
+                <Text style={{ color: '#fff' }}>Pizzas de calabressinha</Text>
             </TouchableOpacity>
 
             <View style={styles.qtdContainer}>

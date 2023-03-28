@@ -3,29 +3,31 @@ import React, { useState, createContext, ReactNode, useContext, } from "react";
 import { api } from '../services/api';
 import { useAuth } from './auth';
 
+type OrderData = {
+    draft: boolean;
+    id: string;
+    name?: string;
+    status: boolean;
+    table: number;
+    updated_at: string;
+    created_at: string;
+}
+
 type OrderContextData = {
     loading: boolean;
     openOrder: (number: string) => Promise<void>;
+    orderData: OrderData;
 }
 
 type OrderProviderProps = {
     children: ReactNode;
 }
 
-type OrderData = {
-    number: number;
-    id: string;
-}
-
-// {draft: true, "id": "9c821b41-c29a-41eb-9a5e-a71a37adaed7", "name": null, "status": false, "table": 88, "updated_at": "2023-03-01T16:24:33.485Z"}
-
 const OrderContext = createContext({} as OrderContextData);
 
 function OrderProvider({ children }: OrderProviderProps) {
     const [loading, setLoading] = useState(false);
-    const [orderData, setOrderData] = useState({
-
-    });
+    const [orderData, setOrderData] = useState<OrderData>({} as OrderData);
 
     const { user } = useAuth();
 
@@ -34,7 +36,8 @@ function OrderProvider({ children }: OrderProviderProps) {
         try {
             const response = await api.post('/order', { table: Number(number) });
 
-            console.log('minha resposta', response.data);
+            setOrderData(response.data);
+
             setLoading(false);
         } catch (error) {
             setLoading(false);
@@ -42,10 +45,26 @@ function OrderProvider({ children }: OrderProviderProps) {
         }
     }
 
+    async function closeOrder(order_id: string) {
+        setLoading(true);
+        try {
+            await api.delete(`/order`, {
+                params: {
+                    order_id: order_id
+                }
+            });
+            setLoading(false);
+        } catch (error) {
+            throw new Error(`Não foi possivel excluir a mesa "${error}"`);
+            setLoading(false);
+        }
+    }
+
     return (
         <OrderContext.Provider value={{
             loading,
-            openOrder
+            openOrder,
+            orderData
         }}>
             {children}
         </OrderContext.Provider>
