@@ -1,8 +1,7 @@
-import { View, StatusBar } from 'react-native';
+import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import Routes from './src/routes';
 
-import { AuthProvider } from './src/hooks/auth';
 import { AppProvider } from './src/hooks';
 
 export default function App() {
@@ -15,3 +14,4 @@ export default function App() {
     </NavigationContainer>
   );
 }
+

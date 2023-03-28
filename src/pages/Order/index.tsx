@@ -5,28 +5,20 @@ import {
     TouchableOpacity,
     TextInput
 } from 'react-native';
-import { useRoute, RouteProp } from '@react-navigation/native';
+import { useOrder } from '../../hooks/order';
 
 import { Feather } from '@expo/vector-icons';
 
 import { styles } from './styles';
 
-type RouteDetailParams = {
-    Order: {
-        number: string | number;
-        order_id: string;
-    }
-}
-
-type OrderRouteProp = RouteProp<RouteDetailParams, 'Order'>;
-
 export default function Order() {
-    const route = useRoute<OrderRouteProp>();
+    const { } = useOrder();
+
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.title}>Mesa {route.params.number}</Text>
+                <Text style={styles.title}>Mesa</Text>
 
                 <TouchableOpacity>
                     <Feather name='trash-2' size={28} color='#ff3f4b' />

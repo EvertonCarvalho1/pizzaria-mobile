@@ -12,10 +12,21 @@ type OrderProviderProps = {
     children: ReactNode;
 }
 
+type OrderData = {
+    number: number;
+    id: string;
+}
+
+// {draft: true, "id": "9c821b41-c29a-41eb-9a5e-a71a37adaed7", "name": null, "status": false, "table": 88, "updated_at": "2023-03-01T16:24:33.485Z"}
+
 const OrderContext = createContext({} as OrderContextData);
 
 function OrderProvider({ children }: OrderProviderProps) {
     const [loading, setLoading] = useState(false);
+    const [orderData, setOrderData] = useState({
+
+    });
+
     const { user } = useAuth();
 
     async function openOrder(number: string) {

@@ -29,10 +29,10 @@ export default function Dashboard() {
 
         try {
             await openOrder(number);
+            navigation.navigate('Order');
         } catch (error) {
             console.log('meu erro', error);
         }
-        // navigation.navigate('Order', { number: number, order_id: '8978789789' });
     }
 
     return (
