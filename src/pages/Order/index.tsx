@@ -7,24 +7,41 @@ import {
     View,
     Text,
     TouchableOpacity,
-    TextInput
+    TextInput,
+    Modal
 } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 
 import { useOrder } from '../../hooks/order';
+import { useCategory } from '../../hooks/category';
 
 import { Feather } from '@expo/vector-icons';
+
+import { ModalPicker } from '../../components/ModalPicker';
 
 import { styles } from './styles';
 
 export default function Order() {
     const navigation = useNavigation();
 
+    const [amount, setAmount] = useState('1');
+    const [modalCategoryVisible, setModalCategoryVisible] = useState(false);
+
     const {
         orderData,
         closeOrder
     } = useOrder();
+
+    const {
+        loadInfo,
+        categorySelected,
+        categoryData
+    } = useCategory();
+
+    useEffect(() => {
+        loadInfo();
+    }, [])
 
     async function handleCloseOrder() {
         try {
@@ -44,9 +61,15 @@ export default function Order() {
                     <Feather name='trash-2' size={28} color='#ff3f4b' />
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.input}>
-                <Text style={{ color: '#fff' }}>Pizzas</Text>
-            </TouchableOpacity>
+
+            {categoryData.length !== 0 && (
+                <TouchableOpacity
+                    style={styles.input}
+                    onPress={() => setModalCategoryVisible(true)}
+                >
+                    <Text style={{ color: '#fff' }}>{categorySelected?.name}</Text>
+                </TouchableOpacity>
+            )}
 
             <TouchableOpacity style={styles.input}>
                 <Text style={{ color: '#fff' }}>Pizzas de calabressinha</Text>
@@ -58,6 +81,8 @@ export default function Order() {
                     style={[styles.input, { width: '60%', textAlign: 'center' }]}
                     placeholderTextColor='#f0f0f0'
                     keyboardType='numeric'
+                    value={amount}
+                    onChangeText={setAmount}
                 />
             </View>
 
@@ -71,6 +96,18 @@ export default function Order() {
                     <Text style={styles.buttonText}>Avançar</Text>
                 </TouchableOpacity>
             </View>
+
+            <Modal
+                transparent={true}
+                visible={modalCategoryVisible}
+                animationType='fade'
+            >
+                <ModalPicker
+                    handleCloseModal={() => setModalCategoryVisible(false)}
+                    options={categoryData}
+                    selectedItem={() => { }}
+                />
+            </Modal>
 
         </View>
     );
