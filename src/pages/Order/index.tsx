@@ -30,7 +30,9 @@ export default function Order() {
     } = useOrder();
 
     const {
-        loadInfo
+        loadInfo,
+        categorySelected,
+        categoryData
     } = useCategory();
 
     useEffect(() => {
@@ -55,9 +57,12 @@ export default function Order() {
                     <Feather name='trash-2' size={28} color='#ff3f4b' />
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.input}>
-                <Text style={{ color: '#fff' }}>Pizzas</Text>
-            </TouchableOpacity>
+
+            {categoryData.length !== 0 && (
+                <TouchableOpacity style={styles.input}>
+                    <Text style={{ color: '#fff' }}>{categorySelected?.name}</Text>
+                </TouchableOpacity>
+            )}
 
             <TouchableOpacity style={styles.input}>
                 <Text style={{ color: '#fff' }}>Pizzas de calabressinha</Text>

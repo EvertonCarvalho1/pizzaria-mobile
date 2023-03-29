@@ -12,7 +12,8 @@ export type CategoryData = {
 type CategoryContextData = {
     loading: boolean;
     loadInfo: () => Promise<void>;
-    categoryData: CategoryData[]
+    categoryData: CategoryData[];
+    categorySelected: CategoryData;
 }
 
 type CategoryProviderProps = {
@@ -32,6 +33,7 @@ function CategoryProvider({ children }: CategoryProviderProps) {
         try {
             const response = await api.get('/category');
             setCategoryData(response.data);
+            setCategorySelected(response.data[0]);
             setLoading(false);
         } catch (error) {
             setLoading(false);
@@ -43,7 +45,8 @@ function CategoryProvider({ children }: CategoryProviderProps) {
         <CategoryContext.Provider value={{
             loading,
             loadInfo,
-            categoryData
+            categoryData,
+            categorySelected
         }}>
             {children}
         </CategoryContext.Provider>
