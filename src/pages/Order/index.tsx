@@ -7,7 +7,8 @@ import {
     View,
     Text,
     TouchableOpacity,
-    TextInput
+    TextInput,
+    Modal
 } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
@@ -17,12 +18,15 @@ import { useCategory } from '../../hooks/category';
 
 import { Feather } from '@expo/vector-icons';
 
+import { ModalPicker } from '../../components/ModalPicker';
+
 import { styles } from './styles';
 
 export default function Order() {
     const navigation = useNavigation();
 
     const [amount, setAmount] = useState('1');
+    const [modalCategoryVisible, setModalCategoryVisible] = useState(false);
 
     const {
         orderData,
@@ -59,7 +63,10 @@ export default function Order() {
             </View>
 
             {categoryData.length !== 0 && (
-                <TouchableOpacity style={styles.input}>
+                <TouchableOpacity
+                    style={styles.input}
+                    onPress={() => setModalCategoryVisible(true)}
+                >
                     <Text style={{ color: '#fff' }}>{categorySelected?.name}</Text>
                 </TouchableOpacity>
             )}
@@ -89,6 +96,18 @@ export default function Order() {
                     <Text style={styles.buttonText}>Avançar</Text>
                 </TouchableOpacity>
             </View>
+
+            <Modal
+                transparent={true}
+                visible={modalCategoryVisible}
+                animationType='fade'
+            >
+                <ModalPicker
+                    handleCloseModal={() => setModalCategoryVisible(false)}
+                    options={categoryData}
+                    selectedItem={() => { }}
+                />
+            </Modal>
 
         </View>
     );
