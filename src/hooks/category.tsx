@@ -3,14 +3,16 @@ import React, { useState, createContext, ReactNode, useContext, } from "react";
 import { api } from '../services/api';
 import { useAuth } from './auth';
 
-type CategoryData = {
+export type CategoryData = {
     id: string;
     name: string
 }
 
 
 type CategoryContextData = {
-
+    loading: boolean;
+    loadInfo: () => Promise<void>;
+    categoryData: CategoryData[]
 }
 
 type CategoryProviderProps = {
@@ -20,11 +22,29 @@ type CategoryProviderProps = {
 const CategoryContext = createContext({} as CategoryContextData);
 
 function CategoryProvider({ children }: CategoryProviderProps) {
-    const [category, setCategory] = useState<CategoryData[] | []>([]);
+    const [loading, setLoading] = useState(false);
+    const [categoryData, setCategoryData] = useState<CategoryData[] | []>([]);
     const [categorySelected, setCategorySelected] = useState<CategoryData>({} as CategoryData);
 
+    async function loadInfo() {
+        setLoading(true);
+
+        try {
+            const response = await api.get('/category');
+            setCategoryData(response.data);
+            setLoading(false);
+        } catch (error) {
+            setLoading(false);
+            throw new Error(`Não foi possivel listar as categorias "${error}"`);
+        }
+    }
+
     return (
-        <CategoryContext.Provider value={{}}>
+        <CategoryContext.Provider value={{
+            loading,
+            loadInfo,
+            categoryData
+        }}>
             {children}
         </CategoryContext.Provider>
     );

@@ -13,6 +13,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 
 import { useOrder } from '../../hooks/order';
+import { useCategory } from '../../hooks/category';
 
 import { Feather } from '@expo/vector-icons';
 
@@ -21,10 +22,20 @@ import { styles } from './styles';
 export default function Order() {
     const navigation = useNavigation();
 
+    const [amount, setAmount] = useState('1');
+
     const {
         orderData,
         closeOrder
     } = useOrder();
+
+    const {
+        loadInfo
+    } = useCategory();
+
+    useEffect(() => {
+        loadInfo();
+    }, [])
 
     async function handleCloseOrder() {
         try {
@@ -58,6 +69,8 @@ export default function Order() {
                     style={[styles.input, { width: '60%', textAlign: 'center' }]}
                     placeholderTextColor='#f0f0f0'
                     keyboardType='numeric'
+                    value={amount}
+                    onChangeText={setAmount}
                 />
             </View>
 
