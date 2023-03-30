@@ -14,7 +14,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 
 import { useOrder } from '../../hooks/order';
-import { useCategory } from '../../hooks/category';
+import { CategoryData, useCategory } from '../../hooks/category';
 
 import { Feather } from '@expo/vector-icons';
 
@@ -36,12 +36,13 @@ export default function Order() {
     const {
         loadInfo,
         categorySelected,
-        categoryData
+        categoryData,
+        setCategorySelected
     } = useCategory();
 
     useEffect(() => {
         loadInfo();
-    }, [])
+    }, []);
 
     async function handleCloseOrder() {
         try {
@@ -50,6 +51,10 @@ export default function Order() {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    function handleChangeCategory(item: CategoryData) {
+        setCategorySelected(item);
     }
 
     return (
@@ -104,8 +109,7 @@ export default function Order() {
             >
                 <ModalPicker
                     handleCloseModal={() => setModalCategoryVisible(false)}
-                    options={categoryData}
-                    selectedItem={() => { }}
+                    selectedItem={handleChangeCategory}
                 />
             </Modal>
 

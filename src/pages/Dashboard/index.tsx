@@ -7,6 +7,7 @@ import {
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import { useOrder } from '../../hooks/order'
+import { useAuth } from '../../hooks/auth'
 
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { StackParamsList } from '../../routes/app.routes';
@@ -16,6 +17,7 @@ import { styles } from './styles';
 export default function Dashboard() {
     const navigation = useNavigation<NativeStackNavigationProp<StackParamsList>>();
     const { openOrder } = useOrder();
+    const { signOut } = useAuth();
     const [number, setNumber] = useState('');
 
     async function handleOpenOrder() {
