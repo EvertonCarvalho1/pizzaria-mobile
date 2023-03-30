@@ -12,7 +12,7 @@ import { styles } from './styles';
 
 type ModalPickerProps = {
     handleCloseModal: () => void;
-    selectedItem: () => void;
+    selectedItem: (item: CategoryData) => void;
 }
 
 export function ModalPicker({
@@ -22,7 +22,8 @@ export function ModalPicker({
     const { categoryData } = useCategory();
 
     function onPressItem(item: CategoryData) {
-        console.log(item);
+        selectedItem(item);
+        handleCloseModal();
     }
 
     const option = categoryData.map((item, index) => {

@@ -8,12 +8,12 @@ export type CategoryData = {
     name: string
 }
 
-
 type CategoryContextData = {
     loading: boolean;
     loadInfo: () => Promise<void>;
     categoryData: CategoryData[];
     categorySelected: CategoryData;
+    setCategorySelected: (item: CategoryData) => void;
 }
 
 type CategoryProviderProps = {
@@ -46,7 +46,8 @@ function CategoryProvider({ children }: CategoryProviderProps) {
             loading,
             loadInfo,
             categoryData,
-            categorySelected
+            categorySelected,
+            setCategorySelected
         }}>
             {children}
         </CategoryContext.Provider>
