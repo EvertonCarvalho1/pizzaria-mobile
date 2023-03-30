@@ -104,7 +104,6 @@ export default function Order() {
             >
                 <ModalPicker
                     handleCloseModal={() => setModalCategoryVisible(false)}
-                    options={categoryData}
                     selectedItem={() => { }}
                 />
             </Modal>
