@@ -4,6 +4,7 @@ import React, { ReactNode } from 'react';
 import { AuthProvider } from './auth';
 import { OrderProvider } from './order';
 import { CategoryProvider } from './category';
+import { ProductsProvider } from './products';
 
 interface AppProviderProps {
     children: ReactNode;
@@ -14,7 +15,9 @@ function AppProvider({ children }: AppProviderProps) {
         <AuthProvider>
             <OrderProvider>
                 <CategoryProvider>
-                    {children}
+                    <ProductsProvider>
+                        {children}
+                    </ProductsProvider>
                 </CategoryProvider>
             </OrderProvider>
         </AuthProvider>
