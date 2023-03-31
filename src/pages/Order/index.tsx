@@ -46,7 +46,9 @@ export default function Order() {
     } = useCategory();
 
     const {
-        loadProducts
+        loadProducts,
+        productsData,
+        productsSelected
     } = useProducts();
 
     useEffect(() => {
@@ -91,9 +93,12 @@ export default function Order() {
                 </TouchableOpacity>
             )}
 
-            <TouchableOpacity style={styles.input}>
-                <Text style={{ color: '#fff' }}>Pizzas de calabressinha</Text>
-            </TouchableOpacity>
+
+            {productsData.length !== 0 && (
+                <TouchableOpacity style={styles.input}>
+                    <Text style={{ color: '#fff' }}>{productsSelected?.name}</Text>
+                </TouchableOpacity>
+            )}
 
             <View style={styles.qtdContainer}>
                 <Text style={styles.qtdText}>Quantidade</Text>

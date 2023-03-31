@@ -46,6 +46,7 @@ function ProductsProvider({ children }: ProductsProviderProps) {
             console.log(response.data);
 
             setProductsData(response.data);
+            setProductsSelected(response.data[0])
             setLoading(false);
         } catch (error) {
             setLoading(false);
