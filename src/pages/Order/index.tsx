@@ -14,9 +14,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 
 import { useOrder } from '../../hooks/order';
-
 import { CategoryData, useCategory } from '../../hooks/category';
-
 import { useProducts } from '../../hooks/products';
 
 import { Feather } from '@expo/vector-icons';
