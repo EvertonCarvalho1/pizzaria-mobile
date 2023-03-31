@@ -15,6 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { useOrder } from '../../hooks/order';
 import { CategoryData, useCategory } from '../../hooks/category';
+import { useProducts } from '../../hooks/products';
 
 import { Feather } from '@expo/vector-icons';
 
@@ -26,7 +27,9 @@ export default function Order() {
     const navigation = useNavigation();
 
     const [amount, setAmount] = useState('1');
+
     const [modalCategoryVisible, setModalCategoryVisible] = useState(false);
+    const [modalProductsVisible, setModalProductsVisible] = useState(false);
 
     const {
         orderData,
@@ -40,9 +43,21 @@ export default function Order() {
         setCategorySelected
     } = useCategory();
 
+    const {
+        loadProducts,
+        productsData,
+        productsSelected
+    } = useProducts();
+
     useEffect(() => {
         loadInfo();
     }, []);
+
+    useEffect(() => {
+        if (categorySelected.id) {
+            loadProducts(categorySelected.id);
+        }
+    }, [categorySelected]);
 
     async function handleCloseOrder() {
         try {
@@ -76,9 +91,12 @@ export default function Order() {
                 </TouchableOpacity>
             )}
 
-            <TouchableOpacity style={styles.input}>
-                <Text style={{ color: '#fff' }}>Pizzas de calabressinha</Text>
-            </TouchableOpacity>
+
+            {productsData.length !== 0 && (
+                <TouchableOpacity style={styles.input}>
+                    <Text style={{ color: '#fff' }}>{productsSelected?.name}</Text>
+                </TouchableOpacity>
+            )}
 
             <View style={styles.qtdContainer}>
                 <Text style={styles.qtdText}>Quantidade</Text>
