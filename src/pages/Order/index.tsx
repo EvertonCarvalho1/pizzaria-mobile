@@ -14,7 +14,10 @@ import {
 import { useNavigation } from '@react-navigation/native';
 
 import { useOrder } from '../../hooks/order';
+
 import { CategoryData, useCategory } from '../../hooks/category';
+
+import { useProducts } from '../../hooks/products';
 
 import { Feather } from '@expo/vector-icons';
 
@@ -26,9 +29,9 @@ export default function Order() {
     const navigation = useNavigation();
 
     const [amount, setAmount] = useState('1');
+
     const [modalCategoryVisible, setModalCategoryVisible] = useState(false);
-
-
+    const [modalProductsVisible, setModalProductsVisible] = useState(false);
 
     const {
         orderData,
@@ -42,9 +45,19 @@ export default function Order() {
         setCategorySelected
     } = useCategory();
 
+    const {
+        loadProducts
+    } = useProducts();
+
     useEffect(() => {
         loadInfo();
     }, []);
+
+    useEffect(() => {
+        if (categorySelected.id) {
+            loadProducts(categorySelected.id);
+        }
+    }, [categorySelected]);
 
     async function handleCloseOrder() {
         try {

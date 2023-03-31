@@ -19,6 +19,7 @@ type ProductsContextData = {
     productsData: ProductsData[];
     productsSelected: ProductsData;
     setProductsSelected: (products: ProductsData) => void;
+    loadProducts: (category_id: string) => Promise<void>
 }
 
 type ProductsProviderProps = {
@@ -32,6 +33,25 @@ function ProductsProvider({ children }: ProductsProviderProps) {
     const [productsData, setProductsData] = useState<ProductsData[] | []>([]);
     const [productsSelected, setProductsSelected] = useState<ProductsData>({} as ProductsData);
 
+    async function loadProducts(category_id: string) {
+        setLoading(true);
+
+        try {
+            const response = await api.get('/category/product', {
+                params: {
+                    category_id: category_id
+                }
+            });
+
+            console.log(response.data);
+
+            setProductsData(response.data);
+            setLoading(false);
+        } catch (error) {
+            setLoading(false);
+            throw new Error(`Não foi possivel listar os produtos "${error}"`);
+        }
+    }
 
 
     return (
@@ -39,7 +59,8 @@ function ProductsProvider({ children }: ProductsProviderProps) {
             loading,
             productsData,
             productsSelected,
-            setProductsSelected
+            setProductsSelected,
+            loadProducts
         }}>
             {children}
         </ProductsContext.Provider>
