@@ -8,7 +8,8 @@ import {
     Text,
     TouchableOpacity,
     TextInput,
-    Modal
+    Modal,
+    FlatList
 } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
@@ -21,16 +22,17 @@ import { Feather } from '@expo/vector-icons';
 
 import { ModalPicker } from '../../components/ModalPicker';
 
+type ItemProps = {
+    id: string;
+    product_id: string;
+    name: string;
+    amount: string | number;
+}
+
 import { styles } from './styles';
 
 export default function Order() {
     const navigation = useNavigation();
-
-    const [amount, setAmount] = useState('1');
-
-    const [modalCategoryVisible, setModalCategoryVisible] = useState(false);
-
-    const [modalProductsVisible, setModalProductsVisible] = useState(false);
 
     const {
         orderData,
@@ -50,6 +52,11 @@ export default function Order() {
         productsSelected,
         setProductsSelected
     } = useProducts();
+
+    const [amount, setAmount] = useState('1');
+    const [items, setItems] = useState<ItemProps[]>([]);
+    const [modalCategoryVisible, setModalCategoryVisible] = useState(false);
+    const [modalProductsVisible, setModalProductsVisible] = useState(false);
 
     useEffect(() => {
         loadInfo();
@@ -124,10 +131,21 @@ export default function Order() {
                 </TouchableOpacity>
 
 
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity
+                    style={[styles.button, { opacity: items.length === 0 ? 0.4 : 1 }]}
+                    disabled={items.length === 0}
+                >
                     <Text style={styles.buttonText}>Avançar</Text>
                 </TouchableOpacity>
             </View>
+
+            <FlatList
+                showsVerticalScrollIndicator={false}
+                style={{ flex: 1, marginTop: 24 }}
+                data={items}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => <></>}
+            />
 
             <Modal
                 transparent={true}
