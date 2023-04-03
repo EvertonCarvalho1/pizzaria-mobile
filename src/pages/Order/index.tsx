@@ -15,7 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { useOrder } from '../../hooks/order';
 import { CategoryData, useCategory } from '../../hooks/category';
-import { useProducts } from '../../hooks/products';
+import { useProducts, ProductsData } from '../../hooks/products';
 
 import { Feather } from '@expo/vector-icons';
 
@@ -29,6 +29,7 @@ export default function Order() {
     const [amount, setAmount] = useState('1');
 
     const [modalCategoryVisible, setModalCategoryVisible] = useState(false);
+
     const [modalProductsVisible, setModalProductsVisible] = useState(false);
 
     const {
@@ -46,7 +47,8 @@ export default function Order() {
     const {
         loadProducts,
         productsData,
-        productsSelected
+        productsSelected,
+        setProductsSelected
     } = useProducts();
 
     useEffect(() => {
@@ -68,8 +70,12 @@ export default function Order() {
         }
     }
 
-    function handleChangeCategory(item: CategoryData) {
+    function handleChangeCategory(item: CategoryData | ProductsData) {
         setCategorySelected(item);
+    }
+
+    function handleChangeProducts(item: CategoryData | ProductsData) {
+        setProductsSelected(item as ProductsData);
     }
 
     return (
@@ -93,7 +99,10 @@ export default function Order() {
 
 
             {productsData.length !== 0 && (
-                <TouchableOpacity style={styles.input}>
+                <TouchableOpacity
+                    style={styles.input}
+                    onPress={() => setModalProductsVisible(true)}
+                >
                     <Text style={{ color: '#fff' }}>{productsSelected?.name}</Text>
                 </TouchableOpacity>
             )}
@@ -128,6 +137,18 @@ export default function Order() {
                 <ModalPicker
                     handleCloseModal={() => setModalCategoryVisible(false)}
                     selectedItem={handleChangeCategory}
+                />
+
+            </Modal>
+
+            <Modal
+                transparent={true}
+                visible={modalProductsVisible}
+                animationType='fade'
+            >
+                <ModalPicker
+                    handleCloseModal={() => setModalProductsVisible(false)}
+                    selectedItem={handleChangeProducts}
                 />
             </Modal>
 

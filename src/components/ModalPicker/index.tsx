@@ -7,12 +7,13 @@ import {
     ScrollView
 } from 'react-native';
 import { CategoryData, useCategory } from '../../hooks/category';
+import { ProductsData } from '../../hooks/products';
 
 import { styles } from './styles';
 
 type ModalPickerProps = {
     handleCloseModal: () => void;
-    selectedItem: (item: CategoryData) => void;
+    selectedItem: (item: CategoryData | ProductsData) => void;
 }
 
 export function ModalPicker({
@@ -21,7 +22,7 @@ export function ModalPicker({
 }: ModalPickerProps) {
     const { categoryData } = useCategory();
 
-    function onPressItem(item: CategoryData) {
+    function onPressItem(item: CategoryData | ProductsData) {
         selectedItem(item);
         handleCloseModal();
     }
