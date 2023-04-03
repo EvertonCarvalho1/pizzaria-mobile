@@ -8,28 +8,31 @@ import {
     Text,
     TouchableOpacity,
     TextInput,
-    Modal
+    Modal,
+    FlatList
 } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 
 import { useOrder } from '../../hooks/order';
 import { CategoryData, useCategory } from '../../hooks/category';
-import { useProducts } from '../../hooks/products';
+import { useProducts, ProductsData } from '../../hooks/products';
 
 import { Feather } from '@expo/vector-icons';
 
 import { ModalPicker } from '../../components/ModalPicker';
 
+type ItemProps = {
+    id: string;
+    product_id: string;
+    name: string;
+    amount: string | number;
+}
+
 import { styles } from './styles';
 
 export default function Order() {
     const navigation = useNavigation();
-
-    const [amount, setAmount] = useState('1');
-
-    const [modalCategoryVisible, setModalCategoryVisible] = useState(false);
-    const [modalProductsVisible, setModalProductsVisible] = useState(false);
 
     const {
         orderData,
@@ -46,8 +49,14 @@ export default function Order() {
     const {
         loadProducts,
         productsData,
-        productsSelected
+        productsSelected,
+        setProductsSelected
     } = useProducts();
+
+    const [amount, setAmount] = useState('1');
+    const [items, setItems] = useState<ItemProps[]>([]);
+    const [modalCategoryVisible, setModalCategoryVisible] = useState(false);
+    const [modalProductsVisible, setModalProductsVisible] = useState(false);
 
     useEffect(() => {
         loadInfo();
@@ -68,8 +77,12 @@ export default function Order() {
         }
     }
 
-    function handleChangeCategory(item: CategoryData) {
+    function handleChangeCategory(item: CategoryData | ProductsData) {
         setCategorySelected(item);
+    }
+
+    function handleChangeProducts(item: CategoryData | ProductsData) {
+        setProductsSelected(item as ProductsData);
     }
 
     return (
@@ -93,7 +106,10 @@ export default function Order() {
 
 
             {productsData.length !== 0 && (
-                <TouchableOpacity style={styles.input}>
+                <TouchableOpacity
+                    style={styles.input}
+                    onPress={() => setModalProductsVisible(true)}
+                >
                     <Text style={{ color: '#fff' }}>{productsSelected?.name}</Text>
                 </TouchableOpacity>
             )}
@@ -115,10 +131,21 @@ export default function Order() {
                 </TouchableOpacity>
 
 
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity
+                    style={[styles.button, { opacity: items.length === 0 ? 0.4 : 1 }]}
+                    disabled={items.length === 0}
+                >
                     <Text style={styles.buttonText}>Avançar</Text>
                 </TouchableOpacity>
             </View>
+
+            <FlatList
+                showsVerticalScrollIndicator={false}
+                style={{ flex: 1, marginTop: 24 }}
+                data={items}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => <></>}
+            />
 
             <Modal
                 transparent={true}
@@ -128,6 +155,20 @@ export default function Order() {
                 <ModalPicker
                     handleCloseModal={() => setModalCategoryVisible(false)}
                     selectedItem={handleChangeCategory}
+                    options={categoryData}
+                />
+
+            </Modal>
+
+            <Modal
+                transparent={true}
+                visible={modalProductsVisible}
+                animationType='fade'
+            >
+                <ModalPicker
+                    handleCloseModal={() => setModalProductsVisible(false)}
+                    selectedItem={handleChangeProducts}
+                    options={productsData}
                 />
             </Modal>
 

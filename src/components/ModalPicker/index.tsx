@@ -6,27 +6,29 @@ import {
     TouchableOpacity,
     ScrollView
 } from 'react-native';
-import { CategoryData, useCategory } from '../../hooks/category';
+import { CategoryData } from '../../hooks/category';
+import { ProductsData } from '../../hooks/products';
 
 import { styles } from './styles';
 
 type ModalPickerProps = {
     handleCloseModal: () => void;
-    selectedItem: (item: CategoryData) => void;
+    selectedItem: (item: CategoryData | ProductsData) => void;
+    options: CategoryData[] | ProductsData[];
 }
 
 export function ModalPicker({
     handleCloseModal,
-    selectedItem
+    selectedItem,
+    options
 }: ModalPickerProps) {
-    const { categoryData } = useCategory();
 
-    function onPressItem(item: CategoryData) {
+    function onPressItem(item: CategoryData | ProductsData) {
         selectedItem(item);
         handleCloseModal();
     }
 
-    const option = categoryData.map((item, index) => {
+    const option = options.map((item, index) => {
         return (
             <TouchableOpacity
                 key={index}
