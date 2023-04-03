@@ -137,6 +137,7 @@ export default function Order() {
                 <ModalPicker
                     handleCloseModal={() => setModalCategoryVisible(false)}
                     selectedItem={handleChangeCategory}
+                    options={categoryData}
                 />
 
             </Modal>
@@ -149,6 +150,7 @@ export default function Order() {
                 <ModalPicker
                     handleCloseModal={() => setModalProductsVisible(false)}
                     selectedItem={handleChangeProducts}
+                    options={productsData}
                 />
             </Modal>
 
