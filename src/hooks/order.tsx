@@ -24,6 +24,7 @@ type OrderContextData = {
     openOrder: (number: string) => Promise<void>;
     orderData: OrderData;
     closeOrder: (order_id: string) => Promise<void>;
+    addItemOrder: (item: AddItemOrderProps) => Promise<void>
 }
 
 type OrderProviderProps = {
@@ -71,11 +72,10 @@ function OrderProvider({ children }: OrderProviderProps) {
     async function addItemOrder(item: AddItemOrderProps) {
         setLoading(true);
         try {
-            await api.post(`/order/add`, {
-                params: {
+            const response = await api.post(`/order/add`, item);
 
-                }
-            });
+            console.log('=========Deu boa', response);
+
             setLoading(false);
         } catch (error) {
 
@@ -89,7 +89,8 @@ function OrderProvider({ children }: OrderProviderProps) {
             loading,
             openOrder,
             orderData,
-            closeOrder
+            closeOrder,
+            addItemOrder
         }}>
             {children}
         </OrderContext.Provider>

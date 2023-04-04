@@ -37,7 +37,8 @@ export default function Order() {
 
     const {
         orderData,
-        closeOrder
+        closeOrder,
+        addItemOrder
     } = useOrder();
 
     const {
@@ -87,7 +88,15 @@ export default function Order() {
     }
 
     async function handleAdd() {
-        console.log('clicou')
+        try {
+            addItemOrder({
+                order_id: orderData?.id,
+                product_id: productsSelected?.id,
+                amount: Number(amount)
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
