@@ -21,13 +21,7 @@ import { useProducts, ProductsData } from '../../hooks/products';
 import { Feather } from '@expo/vector-icons';
 
 import { ModalPicker } from '../../components/ModalPicker';
-
-type ItemProps = {
-    id: string;
-    product_id: string;
-    name: string;
-    amount: string | number;
-}
+import { ListItem } from '../../components/ListItem';
 
 import { styles } from './styles';
 
@@ -36,7 +30,10 @@ export default function Order() {
 
     const {
         orderData,
-        closeOrder
+        closeOrder,
+        addItemOrder,
+        items,
+        setItems
     } = useOrder();
 
     const {
@@ -54,7 +51,7 @@ export default function Order() {
     } = useProducts();
 
     const [amount, setAmount] = useState('1');
-    const [items, setItems] = useState<ItemProps[]>([]);
+
     const [modalCategoryVisible, setModalCategoryVisible] = useState(false);
     const [modalProductsVisible, setModalProductsVisible] = useState(false);
 
@@ -85,14 +82,29 @@ export default function Order() {
         setProductsSelected(item as ProductsData);
     }
 
+    async function handleAdd() {
+        try {
+            addItemOrder({
+                order_id: orderData?.id,
+                product_id: productsSelected?.id,
+                amount: Number(amount),
+                name: productsSelected?.name
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.title}>Mesa</Text>
 
-                <TouchableOpacity onPress={handleCloseOrder}>
-                    <Feather name='trash-2' size={28} color='#ff3f4b' />
-                </TouchableOpacity>
+                {items.length === 0 && (
+                    <TouchableOpacity onPress={handleCloseOrder}>
+                        <Feather name='trash-2' size={28} color='#ff3f4b' />
+                    </TouchableOpacity>
+                )}
             </View>
 
             {categoryData.length !== 0 && (
@@ -126,7 +138,10 @@ export default function Order() {
             </View>
 
             <View style={styles.actions}>
-                <TouchableOpacity style={styles.buttonAdd}>
+                <TouchableOpacity
+                    style={styles.buttonAdd}
+                    onPress={handleAdd}
+                >
                     <Text style={styles.buttonText}>+</Text>
                 </TouchableOpacity>
 
@@ -144,7 +159,7 @@ export default function Order() {
                 style={{ flex: 1, marginTop: 24 }}
                 data={items}
                 keyExtractor={(item) => item.id}
-                renderItem={({ item }) => <></>}
+                renderItem={({ item }) => <ListItem data={item} />}
             />
 
             <Modal
