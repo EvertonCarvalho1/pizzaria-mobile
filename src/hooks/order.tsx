@@ -1,7 +1,6 @@
 import React, { useState, createContext, ReactNode, useContext, } from "react";
 
 import { api } from '../services/api';
-import { useAuth } from './auth';
 
 type OrderData = {
     draft: boolean;
@@ -16,7 +15,15 @@ type OrderData = {
 export type AddItemOrderProps = {
     order_id: string;
     product_id: string;
-    amount: number
+    amount: number,
+    name: string
+}
+
+export type ItemProps = {
+    id: string;
+    product_id: string;
+    name: string;
+    amount: string | number;
 }
 
 type OrderContextData = {
@@ -24,7 +31,9 @@ type OrderContextData = {
     openOrder: (number: string) => Promise<void>;
     orderData: OrderData;
     closeOrder: (order_id: string) => Promise<void>;
-    addItemOrder: (item: AddItemOrderProps) => Promise<void>
+    addItemOrder: (item: AddItemOrderProps) => Promise<void>;
+    items: ItemProps[];
+    setItems: (item: ItemProps[]) => void;
 }
 
 type OrderProviderProps = {
@@ -36,8 +45,7 @@ const OrderContext = createContext({} as OrderContextData);
 function OrderProvider({ children }: OrderProviderProps) {
     const [loading, setLoading] = useState(false);
     const [orderData, setOrderData] = useState<OrderData>({} as OrderData);
-
-    const { user } = useAuth();
+    const [items, setItems] = useState<ItemProps[]>([]);
 
     async function openOrder(number: string) {
         setLoading(true);
@@ -72,9 +80,22 @@ function OrderProvider({ children }: OrderProviderProps) {
     async function addItemOrder(item: AddItemOrderProps) {
         setLoading(true);
         try {
-            const response = await api.post(`/order/add`, item);
+            const response = await api.post(`/order/add`, {
+                order_id: item.order_id,
+                product_id: item.product_id,
+                amount: item.amount
+            });
 
-            console.log('=========Deu boa', response);
+            console.log('=========Deu boa', response.data);
+
+            let data = {
+                id: response.data.id,
+                product_id: item.product_id as string,
+                name: item.name as string,
+                amount: item.amount
+            }
+
+            setItems(oldArray => [...oldArray, data]);
 
             setLoading(false);
         } catch (error) {
@@ -90,7 +111,9 @@ function OrderProvider({ children }: OrderProviderProps) {
             openOrder,
             orderData,
             closeOrder,
-            addItemOrder
+            addItemOrder,
+            items,
+            setItems
         }}>
             {children}
         </OrderContext.Provider>

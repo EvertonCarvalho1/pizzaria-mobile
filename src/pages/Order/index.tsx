@@ -23,13 +23,6 @@ import { Feather } from '@expo/vector-icons';
 import { ModalPicker } from '../../components/ModalPicker';
 import { ListItem } from '../../components/ListItem';
 
-type ItemProps = {
-    id: string;
-    product_id: string;
-    name: string;
-    amount: string | number;
-}
-
 import { styles } from './styles';
 
 export default function Order() {
@@ -38,7 +31,9 @@ export default function Order() {
     const {
         orderData,
         closeOrder,
-        addItemOrder
+        addItemOrder,
+        items,
+        setItems
     } = useOrder();
 
     const {
@@ -56,7 +51,7 @@ export default function Order() {
     } = useProducts();
 
     const [amount, setAmount] = useState('1');
-    const [items, setItems] = useState<ItemProps[]>([]);
+
     const [modalCategoryVisible, setModalCategoryVisible] = useState(false);
     const [modalProductsVisible, setModalProductsVisible] = useState(false);
 
@@ -92,7 +87,8 @@ export default function Order() {
             addItemOrder({
                 order_id: orderData?.id,
                 product_id: productsSelected?.id,
-                amount: Number(amount)
+                amount: Number(amount),
+                name: productsSelected?.name
             });
         } catch (error) {
             console.log(error);
@@ -104,9 +100,11 @@ export default function Order() {
             <View style={styles.header}>
                 <Text style={styles.title}>Mesa</Text>
 
-                <TouchableOpacity onPress={handleCloseOrder}>
-                    <Feather name='trash-2' size={28} color='#ff3f4b' />
-                </TouchableOpacity>
+                {items.length === 0 && (
+                    <TouchableOpacity onPress={handleCloseOrder}>
+                        <Feather name='trash-2' size={28} color='#ff3f4b' />
+                    </TouchableOpacity>
+                )}
             </View>
 
             {categoryData.length !== 0 && (
