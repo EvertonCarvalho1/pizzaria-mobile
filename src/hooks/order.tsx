@@ -13,6 +13,12 @@ type OrderData = {
     created_at: string;
 }
 
+export type AddItemOrderProps = {
+    order_id: string;
+    product_id: string;
+    amount: number
+}
+
 type OrderContextData = {
     loading: boolean;
     openOrder: (number: string) => Promise<void>;
@@ -52,6 +58,22 @@ function OrderProvider({ children }: OrderProviderProps) {
             await api.delete(`/order`, {
                 params: {
                     order_id: order_id
+                }
+            });
+            setLoading(false);
+        } catch (error) {
+
+            setLoading(false);
+            throw new Error(`Não foi possivel excluir a mesa "${error}"`);
+        }
+    }
+
+    async function addItemOrder(item: AddItemOrderProps) {
+        setLoading(true);
+        try {
+            await api.post(`/order/add`, {
+                params: {
+
                 }
             });
             setLoading(false);

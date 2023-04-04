@@ -21,6 +21,7 @@ import { useProducts, ProductsData } from '../../hooks/products';
 import { Feather } from '@expo/vector-icons';
 
 import { ModalPicker } from '../../components/ModalPicker';
+import { ListItem } from '../../components/ListItem';
 
 type ItemProps = {
     id: string;
@@ -85,6 +86,10 @@ export default function Order() {
         setProductsSelected(item as ProductsData);
     }
 
+    async function handleAdd() {
+        console.log('clicou')
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -126,7 +131,10 @@ export default function Order() {
             </View>
 
             <View style={styles.actions}>
-                <TouchableOpacity style={styles.buttonAdd}>
+                <TouchableOpacity
+                    style={styles.buttonAdd}
+                    onPress={handleAdd}
+                >
                     <Text style={styles.buttonText}>+</Text>
                 </TouchableOpacity>
 
@@ -144,7 +152,7 @@ export default function Order() {
                 style={{ flex: 1, marginTop: 24 }}
                 data={items}
                 keyExtractor={(item) => item.id}
-                renderItem={({ item }) => <></>}
+                renderItem={({ item }) => <ListItem data={item} />}
             />
 
             <Modal
