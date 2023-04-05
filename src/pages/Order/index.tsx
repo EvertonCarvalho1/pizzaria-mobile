@@ -24,9 +24,11 @@ import { ModalPicker } from '../../components/ModalPicker';
 import { ListItem } from '../../components/ListItem';
 
 import { styles } from './styles';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StackParamsList } from '../../routes/app.routes';
 
 export default function Order() {
-    const navigation = useNavigation();
+    const navigation = useNavigation<NativeStackNavigationProp<StackParamsList>>();
 
     const {
         orderData,
@@ -95,6 +97,10 @@ export default function Order() {
         }
     }
 
+    function handleFinishOrder() {
+        navigation.navigate('FinishOrder');
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -149,6 +155,7 @@ export default function Order() {
                 <TouchableOpacity
                     style={[styles.button, { opacity: items.length === 0 ? 0.4 : 1 }]}
                     disabled={items.length === 0}
+                    onPress={handleFinishOrder}
                 >
                     <Text style={styles.buttonText}>Avançar</Text>
                 </TouchableOpacity>
