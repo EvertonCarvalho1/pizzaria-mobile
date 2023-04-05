@@ -34,6 +34,7 @@ type OrderContextData = {
     addItemOrder: (item: AddItemOrderProps) => Promise<void>;
     items: ItemProps[];
     setItems: (item: ItemProps[]) => void;
+    deleteItem: (item_id: string) => Promise<void>
 }
 
 type OrderProviderProps = {
@@ -86,8 +87,6 @@ function OrderProvider({ children }: OrderProviderProps) {
                 amount: item.amount
             });
 
-            console.log('=========Deu boa', response.data);
-
             let data = {
                 id: response.data.id,
                 product_id: item.product_id as string,
@@ -105,6 +104,28 @@ function OrderProvider({ children }: OrderProviderProps) {
         }
     }
 
+    async function deleteItem(item_id: string) {
+        setLoading(true);
+        try {
+            await api.delete(`/order/remove`, {
+                params: {
+                    item_id
+                }
+            });
+
+            let removeItem = items.filter(item => {
+                return (item.id !== item_id)
+            });
+
+            setItems(removeItem);
+
+            setLoading(false);
+        } catch (error) {
+            setLoading(false);
+            throw new Error(`Não foi possivel excluir o item"${error}"`);
+        }
+    }
+
     return (
         <OrderContext.Provider value={{
             loading,
@@ -113,7 +134,8 @@ function OrderProvider({ children }: OrderProviderProps) {
             closeOrder,
             addItemOrder,
             items,
-            setItems
+            setItems,
+            deleteItem
         }}>
             {children}
         </OrderContext.Provider>
