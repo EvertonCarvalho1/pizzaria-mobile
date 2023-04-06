@@ -94,6 +94,7 @@ export default function Order() {
             });
 
             setAmount('1');
+
         } catch (error) {
             console.log(error);
         }
