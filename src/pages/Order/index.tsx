@@ -86,7 +86,7 @@ export default function Order() {
 
     async function handleAdd() {
         try {
-            addItemOrder({
+            await addItemOrder({
                 order_id: orderData?.id,
                 product_id: productsSelected?.id,
                 amount: Number(amount),
