@@ -92,6 +92,8 @@ export default function Order() {
                 amount: Number(amount),
                 name: productsSelected?.name
             });
+
+            setAmount('1');
         } catch (error) {
             console.log(error);
         }

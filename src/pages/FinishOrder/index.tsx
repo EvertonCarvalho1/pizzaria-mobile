@@ -25,6 +25,7 @@ export default function FinishOrder() {
     async function handleFinish() {
         try {
             await finishOrder(orderData?.id);
+            navigation.popToTop();
         } catch (error) {
             console.log(error);
         }

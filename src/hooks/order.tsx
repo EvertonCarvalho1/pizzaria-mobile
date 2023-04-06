@@ -135,7 +135,7 @@ function OrderProvider({ children }: OrderProviderProps) {
             });
 
             setOrderData({} as OrderData);
-
+            setItems([]);
             setLoading(false);
         } catch (error) {
             setLoading(false);
