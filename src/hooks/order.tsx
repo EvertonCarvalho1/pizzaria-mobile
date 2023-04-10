@@ -34,7 +34,8 @@ type OrderContextData = {
     addItemOrder: (item: AddItemOrderProps) => Promise<void>;
     items: ItemProps[];
     setItems: (item: ItemProps[]) => void;
-    deleteItem: (item_id: string) => Promise<void>
+    deleteItem: (item_id: string) => Promise<void>;
+    finishOrder: (order_id: string) => Promise<void>;
 }
 
 type OrderProviderProps = {
@@ -126,6 +127,22 @@ function OrderProvider({ children }: OrderProviderProps) {
         }
     }
 
+    async function finishOrder(order_id: string) {
+        setLoading(true);
+        try {
+            await api.put(`/order/send`, {
+                order_id: order_id
+            });
+
+            setOrderData({} as OrderData);
+            setItems([]);
+            setLoading(false);
+        } catch (error) {
+            setLoading(false);
+            throw new Error(`Não foi possivel finalizar pedido"${error}"`);
+        }
+    }
+
     return (
         <OrderContext.Provider value={{
             loading,
@@ -135,7 +152,8 @@ function OrderProvider({ children }: OrderProviderProps) {
             addItemOrder,
             items,
             setItems,
-            deleteItem
+            deleteItem,
+            finishOrder
         }}>
             {children}
         </OrderContext.Provider>

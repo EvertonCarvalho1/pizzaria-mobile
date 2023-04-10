@@ -24,13 +24,21 @@ import { styles } from './styles';
 export function ListItem({ data }: ItemProps) {
     const { deleteItem } = useOrder();
 
+    async function handleDeleteItem(id: string) {
+        try {
+            await deleteItem(id);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
 
         <View style={styles.container}>
             <Text style={styles.item}>{data.amount} - {data.name}</Text>
 
             <TouchableOpacity
-                onPress={() => deleteItem(data.id)}
+                onPress={() => handleDeleteItem(data.id)}
             >
                 <Feather name='trash-2' color="#ff3f4b" size={25} />
             </TouchableOpacity>
